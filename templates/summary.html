@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3 class="mb-3">အနှစ်ချုပ်</h3>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-bg-success">
+            <div class="card-body">
+                <h5 class="card-title">စုစုပေါင်း ဝင်ငွေ</h5>
+                <p class="card-text fs-4">{{ "%.2f"|format(total_income) }} ကျပ်</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">စုစုပေါင်း အသုံးစရိတ်</h5>
+                <p class="card-text fs-4">{{ "%.2f"|format(total_expense) }} ကျပ်</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">လက်ကျန်ငွေ</h5>
+                <p class="card-text fs-4">{{ "%.2f"|format(balance) }} ကျပ်</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h4>အသုံးစရိတ် Chart (Category အလိုက်)</h4>
+        <div class="card card-body bg-dark-subtle text-light border-secondary">
+            {% if chart_data %}
+                <canvas id="expenseChart"></canvas>
+            {% else %}
+                <p class="text-center">Chart ပြသရန် အသုံးစရိတ် data မရှိပါ။</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>အသုံးစရိတ် စာရင်း</h4>
+        <table class="table table-dark table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>စုစုပေါင်း</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in expense_by_cat %}
+                <tr>
+                    <td>{{ row.category }}</td>
+                    <td>{{ "%.2f"|format(row.total) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="2" class="text-center">Data မရှိပါ။</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if chart_data %}
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut', // Pie chart or doughnut chart
+        data: {
+            labels: {{ chart_labels | tojson }},
+            datasets: [{
+                label: 'အသုံးစရိတ်',
+                data: {{ chart_data | tojson }},
+                backgroundColor: [ // အရောင်များ
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                    '#FF9F40', '#E7E9ED', '#83E348', '#E348A1'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: 'white' // Legend text color
+                    }
+                }
+            }
+        }
+    });
+    {% endif %}
+</script>
+{% endblock %}

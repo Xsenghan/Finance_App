@@ -1,0 +1,44 @@
+/* PDF ထဲမှာပါတဲ့ အခြေခံ CSS */
+*{
+    margin: o;
+    padding: o;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* UI ကို ပိုမို ကောင်းမွန်အောင် ဖြည့်စွက်ထားသော CSS */
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.form-select, .form-control {
+    background-color: #343a40;
+    color: #fff;
+    border-color: #555;
+}
+
+.form-select:focus, .form-control:focus {
+    background-color: #343a40;
+    color: #fff;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.card {
+    border: 1px solid #444;
+}
+
+/* Responsive table များအတွက် */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .btn-sm {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+    }
+}

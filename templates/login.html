@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="my" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ငွေစာရင်း App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #212529; /* bg-dark */
+        }
+    </style>
+</head>
+<body class="bg-dark text-light">
+    <div class="container" style="max-width: 400px;">
+        <div class="card card-body bg-dark-subtle text-light border-secondary shadow-lg">
+            <h3 class="text-center mb-4"><i class="bi bi-wallet-fill"></i> ငွေစာရင်း App Login</h3>
+            
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            
+            <form method="POST">
+                <div class="form-floating mb-3">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                    <label for="password">Password</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 btn-lg"><i class="bi bi-box-arrow-in-right"></i> Login ဝင်မည်</button>
+            </form>
+            <hr>
+            <p class="text-center mb-0">
+                Account မရှိသေးဘူးလား? 
+                <a href="{{ url_for('register') }}">ဒီမှာ အသစ်ဖွင့်ပါ</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

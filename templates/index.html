@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-bg-success">
+            <div class="card-body">
+                <h5 class="card-title">စုစုပေါင်း ဝင်ငွေ</h5>
+                <p class="card-text fs-4">{{ "%.2f"|format(total_income) }} ကျပ်</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">စုစုပေါင်း အသုံးစရိတ်</h5>
+                <p class="card-text fs-4">{{ "%.2f"|format(total_expense) }} ကျပ်</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">လက်ကျန်ငွေ</h5>
+                <p class="card-text fs-4">{{ "%.2f"|format(balance) }} ကျပ်</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mb-3">ငွေဝင်/ငွေထွက် စာရင်းများ</h3>
+<div class="table-responsive">
+    <table class="table table-dark table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>အမျိုးအစား</th>
+                <th>ပမာဏ</th>
+                <th>Category</th>
+                <th>မှတ်စု</th>
+                <th>နေ့စွဲ</th>
+                <th>ပြင်ဆင်ရန်</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in records %}
+            <tr>
+                <td>
+                    {% if row.type == 'income' %}
+                        <span class="badge text-bg-success">ဝင်ငွေ</span>
+                    {% else %}
+                        <span class="badge text-bg-danger">အသုံးစရိတ်</span>
+                    {% endif %}
+                </td>
+                <td>{{ "%.2f"|format(row.amount) }}</td>
+                <td>{{ row.category }}</td>
+                <td>{{ row.note }}</td>
+                <td>{{ row.date }}</td>
+                <td>
+                    <a href="{{ url_for('edit', id=row.id) }}" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <a href="{{ url_for('delete', id=row.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('ဒီစာရင်းကို ဖျက်မှာ သေချာလား?')">
+                        <i class="bi bi-trash-fill"></i>
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">စာရင်းများ မရှိသေးပါ။</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

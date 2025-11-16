@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3 class="mb-3">စာရင်း ပြင်ဆင်ခြင်း</h3>
+<form method="POST" class="card card-body bg-dark-subtle text-light border-secondary">
+    
+    <div class="mb-3">
+        <label class="form-label">အမျိုးအစား</label>
+        <div>
+            <input type="radio" class="btn-check" name="type" id="income-radio" value="income" autocomplete="off" {% if record.type=='income' %}checked{% endif %}>
+            <label class="btn btn-outline-success" for="income-radio">ဝင်ငွေ (Income)</label>
+            
+            <input type="radio" class="btn-check" name="type" id="expense-radio" value="expense" autocomplete="off" {% if record.type=='expense' %}checked{% endif %}>
+            <label class="btn btn-outline-danger" for="expense-radio">အသုံးစရိတ် (Expense)</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="amount" class="form-label">ပမာဏ (ကျပ်)</label>
+        <input type="number" name="amount" id="amount" value="{{ record.amount }}" step="0.01" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="category" id="category" class="form-select" required>
+            <option value="">-- Category ရွေးပါ --</option>
+            {% for c in categories %}
+                <option value="{{ c.name }}" data-type="{{ c.type }}" {% if c.name == record.category %}selected{% endif %}>
+                    {{ c.name }} ({{ c.type }})
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="note" class="form-label">မှတ်စု</label>
+        <input type="text" name="note" id="note" value="{{ record.note }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="date" class="form-label">နေ့စွဲ</label>
+        <input type="date" name="date" id="date" value="{{ record.date }}" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-warning btn-lg"><i class="bi bi-save"></i> ပြောင်းလဲမှုများကို သိမ်းဆည်းမည်</button>
+</form>
+
+<script>
+    // Edit page မှာလည်း JS filter ထည့်သွင်းပေးထားပါမယ်
+    const incomeRadio = document.getElementById('income-radio');
+    const expenseRadio = document.getElementById('expense-radio');
+    const categorySelect = document.getElementById('category');
+    const allOptions = Array.from(categorySelect.options).slice(1);
+
+    function filterCategories() {
+        const selectedType = document.querySelector('input[name="type"]:checked').value;
+        
+        allOptions.forEach(option => {
+            if (option.dataset.type === selectedType) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+        
+        // လက်ရှိ category က filter ကြောင့် ပျောက်သွားရင် reset မလုပ်ဘူး
+        // (User က အမျိုးအစား ပြောင်းချင်လို့)
+    }
+    
+    incomeRadio.addEventListener('change', filterCategories);
+    expenseRadio.addEventListener('change', filterCategories);
+    
+    filterCategories();
+</script>
+{% endblock %}

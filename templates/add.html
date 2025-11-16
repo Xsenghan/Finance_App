@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3 class="mb-3">စာရင်းအသစ် ထည့်သွင်းခြင်း</h3>
+<form method="POST" class="card card-body bg-dark-subtle text-light border-secondary">
+    
+    <div class="mb-3">
+        <label class="form-label">အမျိုးအစား</label>
+        <div>
+            <input type="radio" class="btn-check" name="type" id="income-radio" value="income" autocomplete="off" checked>
+            <label class="btn btn-outline-success" for="income-radio">ဝင်ငွေ (Income)</label>
+            
+            <input type="radio" class="btn-check" name="type" id="expense-radio" value="expense" autocomplete="off">
+            <label class="btn btn-outline-danger" for="expense-radio">အသုံးစရိတ် (Expense)</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="amount" class="form-label">ပမာဏ (ကျပ်)</label>
+        <input type="number" name="amount" id="amount" step="0.01" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="category" id="category" class="form-select" required>
+            <option value="">-- Category ရွေးပါ --</option>
+            {% for c in categories %}
+                <option value="{{ c.name }}" data-type="{{ c.type }}">{{ c.name }} ({{ c.type }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="note" class="form-label">မှတ်စု</label>
+        <input type="text" name="note" id="note" class="form-control" placeholder="ဥပမာ - နေ့လည်စာ">
+    </div>
+
+    <div class="mb-3">
+        <label for="date" class="form-label">နေ့စွဲ</label>
+        <input type="date" name="date" id="date" class="form-control" value="{{ today }}">
+    </div>
+
+    <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-check-circle"></i> သိမ်းဆည်းမည်</button>
+</form>
+
+<script>
+    // JS အနည်းငယ် - ဝင်ငွေ / အသုံးစရိတ် ရွေးတာနဲ့ Category list ကို filter လုပ်ပေးမယ်
+    const incomeRadio = document.getElementById('income-radio');
+    const expenseRadio = document.getElementById('expense-radio');
+    const categorySelect = document.getElementById('category');
+    const allOptions = Array.from(categorySelect.options).slice(1); // "Category ရွေးပါ" ကလွဲပြီး ကျန်တာယူ
+
+    function filterCategories() {
+        const selectedType = document.querySelector('input[name="type"]:checked').value;
+        
+        // categorySelect.value = ""; // Reset selection
+        
+        allOptions.forEach(option => {
+            if (option.dataset.type === selectedType) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+    }
+    
+    incomeRadio.addEventListener('change', filterCategories);
+    expenseRadio.addEventListener('change', filterCategories);
+    
+    // Page စဖွင့်ဖွင့်ချင်း run ပေးပါ
+    filterCategories();
+</script>
+{% endblock %}
